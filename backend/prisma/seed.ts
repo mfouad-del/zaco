@@ -40,7 +40,7 @@ async function main() {
   // Do not create any users from seed in production; keep DB companies only
   console.log('Seed completed: ensured companies');
 
-  console.log({ company, user });
+  console.log({ company });
 }
 
 main()
