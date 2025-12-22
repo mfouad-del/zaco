@@ -8,6 +8,7 @@
   "scripts": {
     "build": "npx nest build",
     "prebuild": "npx prisma migrate resolve --rolled-back 20251222122214_init || true",
+    "postinstall": "npx prisma migrate resolve --rolled-back 20251222122214_init || true",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
