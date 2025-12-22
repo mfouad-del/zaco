@@ -100,7 +100,7 @@ const App: React.FC = () => {
       formData.append('title', data.title || '');
       formData.append('sender', data.sender || '');
       formData.append('recipient', data.recipient || '');
-      formData.append('docDate', data.documentDate || new Date().toISOString());
+      formData.append('docDate', data.documentDate ? new Date(data.documentDate).toISOString() : new Date().toISOString());
       formData.append('priority', data.priority || Priority.NORMAL);
       formData.append('securityLevel', data.security || SecurityLevel.PUBLIC);
       if (data.pdfFile && data.pdfFile.file) {
@@ -119,7 +119,7 @@ const App: React.FC = () => {
     }
   };
 
-  if (!currentUser) return <Login onLogin={setCurrentUser} logoUrl={`${baseUrl}logo.png`} />;
+  if (!currentUser) return <Login onLogin={setCurrentUser} logoUrl={`https://zaco.sa/logo2.png`} />;
 
   const NavItem = ({ id, label, icon: Icon, adminOnly = false }: { id: string, label: string, icon: any, adminOnly?: boolean }) => {
     if (adminOnly && currentUser.role !== 'ADMIN') return null;

@@ -14,13 +14,19 @@ export class CorrespondenceService {
 
   async create(userId: string, companyId: string, dto: CreateCorrespondenceDto, file?: Express.Multer.File) {
     const barcodeId = this.barcodeService.generateBusinessBarcode(dto.type);
-    
+
+    // Ensure docDate is a proper Date object accepted by Prisma
+    const docDate = dto.docDate ? new Date(dto.docDate) : new Date();
+
+    const attachmentUrl = file ? `/uploads/${file.filename || file.originalname}` : null;
+
     const correspondence = await this.prisma.correspondence.create({
       data: {
         ...dto,
+        docDate,
         barcodeId,
         companyId,
-        attachmentUrl: file ? file.path : null,
+        attachmentUrl,
         internalRef: barcodeId, // Default internal ref to barcode
       },
     });

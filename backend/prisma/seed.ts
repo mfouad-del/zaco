@@ -4,18 +4,33 @@ import * as argon2 from 'argon2';
 const prisma = new PrismaClient();
 
 async function main() {
-  const company = await prisma.company.create({
-    data: {
+  const company = await prisma.company.upsert({
+    where: { nameEn: 'Zawaya Albina' },
+    update: {},
+    create: {
       nameAr: 'شركة زوايا البناء',
       nameEn: 'Zawaya Albina',
-      logoUrl: 'https://via.placeholder.com/150',
+      logoUrl: 'https://zaco.sa/logo2.png',
+    },
+  });
+
+  // Add second company if not exists
+  const company2 = await prisma.company.upsert({
+    where: { nameEn: 'Tahalof Al-Jazeerah' },
+    update: {},
+    create: {
+      nameAr: 'تحالفات الجزيره',
+      nameEn: 'Tahalof Al-Jazeerah',
+      logoUrl: 'https://zaco.sa/logo2.png',
     },
   });
 
   const passwordHash = await argon2.hash('admin123');
 
-  const user = await prisma.user.create({
-    data: {
+  const user = await prisma.user.upsert({
+    where: { email: 'admin@example.com' },
+    update: { companyId: company.id },
+    create: {
       email: 'admin@example.com',
       passwordHash,
       name: 'Admin User',
