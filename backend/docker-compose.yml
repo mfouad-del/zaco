@@ -1,0 +1,37 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: archivx_db
+    environment:
+      POSTGRES_USER: archivx_user
+      POSTGRES_PASSWORD: archivx_password
+      POSTGRES_DB: archivx_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - archivx_network
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: archivx_api
+    ports:
+      - "3001:3001"
+    environment:
+      DATABASE_URL: "postgresql://archivx_user:archivx_password@postgres:5432/archivx_db?schema=public"
+      JWT_SECRET: "super_secret_jwt_key_change_in_prod"
+    depends_on:
+      - postgres
+    networks:
+      - archivx_network
+
+volumes:
+  postgres_data:
+
+networks:
+  archivx_network:
+    driver: bridge

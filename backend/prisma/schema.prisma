@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Company {
+  id        String   @id @default(uuid())
+  nameAr    String
+  nameEn    String
+  logoUrl   String?
+  taxNumber String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users           User[]
+  correspondences Correspondence[]
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         String   @default("USER")
+  companyId    String
+  company      Company  @relation(fields: [companyId], references: [id])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  auditLogs AuditLog[]
+}
+
+model Correspondence {
+  id             String        @id @default(uuid())
+  barcodeId      String        @unique
+  type           String
+  title          String
+  sender         String
+  recipient      String
+  referenceNum   String?
+  internalRef    String?
+  docDate        DateTime
+  priority       String        @default("NORMAL")
+  securityLevel  String        @default("PUBLIC")
+  attachmentUrl  String?
+  description    String?
+  category       String?
+  physicalLocation String?
+  
+  companyId      String
+  company        Company       @relation(fields: [companyId], references: [id])
+  
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  action    String
+  metadata  String?
+  timestamp DateTime @default(now())
+}
