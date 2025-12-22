@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Test ESM Import</title>
+</head>
+<body>
+    <h1>Testing ESM Modules</h1>
+    <div id="status">Loading...</div>
+    
+    <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react@19.2.3"
+      }
+    }
+    </script>
+    
+    <script type="module">
+      try {
+        const React = await import('react');
+        document.getElementById('status').textContent = 'React loaded: ' + React.version;
+        document.getElementById('status').style.color = 'green';
+      } catch(e) {
+        document.getElementById('status').textContent = 'Error: ' + e.message;
+        document.getElementById('status').style.color = 'red';
+        console.error(e);
+      }
+    </script>
+</body>
+</html>

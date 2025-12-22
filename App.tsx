@@ -64,7 +64,7 @@ const App: React.FC = () => {
     }
   };
 
-  const baseUrl = (import.meta as any).env?.BASE_URL || '/';
+  const baseUrl = '/zaco/';
   const currentCompany = settings.companies.find(c => c.id === selectedCompanyId) || settings.companies[0] || {
     id: 'default',
     nameAr: 'جاري التحميل...',
