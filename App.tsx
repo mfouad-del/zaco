@@ -119,7 +119,7 @@ const App: React.FC = () => {
     }
   };
 
-  if (!currentUser) return <Login onLogin={setCurrentUser} logoUrl={`https://zaco.sa/logo2.png`} />;
+  if (!currentUser) return <Login onLogin={setCurrentUser} logoUrl={`https://www.zaco.sa/logo2.png`} />;
 
   const NavItem = ({ id, label, icon: Icon, adminOnly = false }: { id: string, label: string, icon: any, adminOnly?: boolean }) => {
     if (adminOnly && currentUser.role !== 'ADMIN') return null;

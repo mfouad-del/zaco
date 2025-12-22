@@ -16,7 +16,8 @@ const ReportGenerator: React.FC<ReportGeneratorProps> = ({ docs, settings }) => 
   const [endDate, setEndDate] = useState(new Date().toISOString().split('T')[0]);
 
   const filteredDocs = docs.filter(doc => {
-    return doc.date >= startDate && doc.date <= endDate;
+    const d = doc.docDate ? new Date(doc.docDate).toISOString().split('T')[0] : '';
+    return d >= startDate && d <= endDate;
   });
 
   const stats = {
@@ -38,7 +39,7 @@ const ReportGenerator: React.FC<ReportGeneratorProps> = ({ docs, settings }) => 
         <td>${doc.title}</td>
         <td style="text-align: center;">${doc.type === DocType.INCOMING ? 'وارد' : 'صادر'}</td>
         <td>${doc.sender}</td>
-        <td style="text-align: center;">${doc.date}</td>
+        <td style="text-align: center;">${doc.docDate ? new Date(doc.docDate).toLocaleDateString('ar-SA') : ''}</td>
       </tr>
     `).join('');
 
@@ -176,7 +177,7 @@ const ReportGenerator: React.FC<ReportGeneratorProps> = ({ docs, settings }) => 
           </div>
           <div>
             <h2 className="text-3xl font-black text-slate-900 leading-tight">مركز توليد التقارير</h2>
-            <p className="text-slate-500 font-medium">قم بتحديد النطاق الزمني لاستخراج تقرير مفصل بنسخة A4</p>
+            <p className="text-slate-700 font-medium">قم بتحديد النطاق الزمني لاستخراج تقرير مفصل بنسخة A4</p>
           </div>
         </div>
 

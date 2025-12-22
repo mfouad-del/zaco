@@ -51,7 +51,7 @@ export class PdfService {
         { label: 'العنوان', value: data.title },
         { label: 'المرسل', value: data.sender },
         { label: 'المستلم', value: data.recipient },
-        { label: 'التاريخ', value: new Date(data.docDate).toLocaleDateString('ar-SA') },
+        { label: 'التاريخ', value: data.docDate ? new Date(data.docDate).toLocaleDateString('ar-SA') : (data.documentDate ? new Date(data.documentDate).toLocaleDateString('ar-SA') : '—') },
         { label: 'الأهمية', value: data.priority },
       ];
 

@@ -6,6 +6,7 @@ import { CorrespondenceModule } from './correspondence/correspondence.module';
 import { CompanyModule } from './company/company.module';
 import { AuditLogModule } from './audit-log/audit-log.module';
 import { StatsModule } from './stats/stats.module';
+import { AdminController } from './admin/admin.controller';
 
 @Module({
   imports: [
@@ -17,5 +18,6 @@ import { StatsModule } from './stats/stats.module';
     AuditLogModule,
     StatsModule,
   ],
+  controllers: [AdminController],
 })
 export class AppModule {}

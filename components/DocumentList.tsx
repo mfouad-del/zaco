@@ -13,17 +13,23 @@ interface DocumentListProps {
 
 const DocumentList: React.FC<DocumentListProps> = ({ docs, settings }) => {
   const [searchTerm, setSearchTerm] = React.useState('');
+  const [typeFilter, setTypeFilter] = React.useState<string>('');
+  const [startDate, setStartDate] = React.useState<string>('');
+  const [endDate, setEndDate] = React.useState<string>('');
 
-  const filtered = docs.filter(doc => 
-    doc.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    doc.barcodeId.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filtered = docs.filter(doc => {
+    const matchesSearch = doc.title.toLowerCase().includes(searchTerm.toLowerCase()) || doc.barcodeId.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesType = typeFilter ? doc.type === typeFilter : true;
+    const d = doc.docDate ? new Date(doc.docDate).toISOString().split('T')[0] : '';
+    const matchesDate = (startDate ? d >= startDate : true) && (endDate ? d <= endDate : true);
+    return matchesSearch && matchesType && matchesDate;
+  });
 
   return (
     <div className="space-y-8 animate-in fade-in duration-700">
       <div className="flex flex-col lg:flex-row gap-6 justify-between items-center">
         <div className="relative flex-1 w-full max-w-2xl">
-          <Search className="absolute right-6 top-1/2 -translate-y-1/2 text-slate-300" size={20} />
+          <Search className="absolute right-6 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
           <input 
             type="text" 
             placeholder="البحث في الأرشيف الهندسي (باركود، عنوان، موضوع)..." 
@@ -31,6 +37,15 @@ const DocumentList: React.FC<DocumentListProps> = ({ docs, settings }) => {
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
           />
+          <div className="flex gap-3 mt-3">
+            <select value={typeFilter} onChange={e => setTypeFilter(e.target.value)} className="p-3 rounded-xl border border-slate-100 bg-white text-sm font-bold">
+              <option value="">كل الأنواع</option>
+              <option value="INCOMING">وارد</option>
+              <option value="OUTGOING">صادر</option>
+            </select>
+            <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} className="p-3 rounded-xl border border-slate-100 bg-white text-sm font-bold" />
+            <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} className="p-3 rounded-xl border border-slate-100 bg-white text-sm font-bold" />
+          </div>
         </div>
         <button onClick={() => exportToCSV(filtered, 'Zawaya_ArchivX')} className="bg-slate-900 text-white px-8 py-5 rounded-[2rem] font-black text-sm flex items-center gap-3 shadow-xl hover:bg-slate-800 transition-all">
           <FileSpreadsheet size={18} /> تصدير السجل العام
@@ -75,7 +90,7 @@ const DocumentList: React.FC<DocumentListProps> = ({ docs, settings }) => {
                         <ExternalLink size={12} className="opacity-0 group-hover/file:opacity-100 transition-all" />
                      </a>
                    ) : (
-                     <span className="text-[10px] font-bold text-slate-300">لا يوجد ملف مرفق</span>
+                     <span className="text-[10px] font-bold text-slate-600">لا يوجد ملف مرفق</span>
                    )}
                 </td>
                 <td className="px-10 py-10">

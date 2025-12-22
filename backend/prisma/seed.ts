@@ -4,40 +4,41 @@ import * as argon2 from 'argon2';
 const prisma = new PrismaClient();
 
 async function main() {
-  const company = await prisma.company.upsert({
-    where: { nameEn: 'Zawaya Albina' },
-    update: {},
-    create: {
-      nameAr: 'شركة زوايا البناء',
-      nameEn: 'Zawaya Albina',
-      logoUrl: 'https://zaco.sa/logo2.png',
-    },
-  });
+  // Ensure a single canonical Zawaya company and update its display name/logo
+  const existing = await prisma.company.findMany({ where: { nameEn: 'Zawaya Albina' }, orderBy: { createdAt: 'asc' } });
+  let company;
+  if (existing.length === 0) {
+    company = await prisma.company.create({
+      data: {
+        nameAr: 'شركة زوايا البناء للإستشارات الهندسيه',
+        nameEn: 'Zawaya Albina',
+        logoUrl: 'https://www.zaco.sa/logo2.png',
+      },
+    });
+  } else {
+    // Keep first, delete duplicates
+    company = existing[0];
+    if (existing.length > 1) {
+      const idsToRemove = existing.slice(1).map(c => c.id);
+      await prisma.company.deleteMany({ where: { id: { in: idsToRemove } } });
+    }
+    // Update name/logo to canonical values
+    await prisma.company.update({ where: { id: company.id }, data: { nameAr: 'شركة زوايا البناء للإستشارات الهندسيه', logoUrl: 'https://www.zaco.sa/logo2.png' } });
+  }
 
-  // Add second company if not exists
-  const company2 = await prisma.company.upsert({
+  // Ensure the second company exists (Tahalof) and set logo to canonical
+  await prisma.company.upsert({
     where: { nameEn: 'Tahalof Al-Jazeerah' },
-    update: {},
+    update: { logoUrl: 'https://www.zaco.sa/logo2.png' },
     create: {
       nameAr: 'تحالفات الجزيره',
       nameEn: 'Tahalof Al-Jazeerah',
-      logoUrl: 'https://zaco.sa/logo2.png',
+      logoUrl: 'https://www.zaco.sa/logo2.png',
     },
   });
 
-  const passwordHash = await argon2.hash('admin123');
-
-  const user = await prisma.user.upsert({
-    where: { email: 'admin@example.com' },
-    update: { companyId: company.id },
-    create: {
-      email: 'admin@example.com',
-      passwordHash,
-      name: 'Admin User',
-      role: 'ADMIN',
-      companyId: company.id,
-    },
-  });
+  // Do not create any users from seed in production; keep DB companies only
+  console.log('Seed completed: ensured companies');
 
   console.log({ company, user });
 }
