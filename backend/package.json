@@ -7,6 +7,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "npx nest build",
+    "ci:build": "npx prisma generate && npx prisma migrate resolve --rolled-back 20251222122214_init || true && (npx prisma migrate deploy || npx prisma db push --accept-data-loss) && npm run build",
     "prebuild": "npx prisma migrate resolve --rolled-back 20251222122214_init || true",
     "postinstall": "npx prisma migrate resolve --rolled-back 20251222122214_init || true",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",

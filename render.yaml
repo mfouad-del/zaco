@@ -3,7 +3,7 @@ services:
     name: archivx-backend
     env: node
     plan: free
-    buildCommand: cd backend && npm install && npx prisma generate && npx prisma db push --accept-data-loss && npm run build
+    buildCommand: cd backend && npm install && npm run ci:build
     startCommand: cd backend && npx ts-node prisma/seed.ts && npm run start:prod
     envVars:
       - key: DATABASE_URL
