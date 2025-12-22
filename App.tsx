@@ -13,7 +13,11 @@ import Login from './components/Login';
 import UserManagement from './components/UserManagement';
 import { correspondence, companies, stats } from './services/api';
 
+console.log('[ARCHIVX] App component loaded');
+
 const App: React.FC = () => {
+  console.log('[ARCHIVX] App component rendering...');
+  
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [activeTab, setActiveTab] = useState('dashboard');
   const [docs, setDocs] = useState<Correspondence[]>([]);
