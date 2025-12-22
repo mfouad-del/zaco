@@ -68,7 +68,7 @@ const App: React.FC = () => {
     id: 'default',
     nameAr: 'جاري التحميل...',
     nameEn: 'Loading...',
-    logoUrl: 'https://via.placeholder.com/150'
+    logoUrl: '/logo.png'
   };
   
   const filteredDocs = docs; // Backend filters by company automatically
@@ -114,7 +114,7 @@ const App: React.FC = () => {
     }
   };
 
-  if (!currentUser) return <Login onLogin={setCurrentUser} logoUrl="https://via.placeholder.com/150" />;
+  if (!currentUser) return <Login onLogin={setCurrentUser} logoUrl="/logo.png" />;
 
   const NavItem = ({ id, label, icon: Icon, adminOnly = false }: { id: string, label: string, icon: any, adminOnly?: boolean }) => {
     if (adminOnly && currentUser.role !== 'ADMIN') return null;
