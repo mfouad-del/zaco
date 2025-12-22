@@ -23,6 +23,17 @@ async function bootstrap() {
   // Serve uploaded files publicly
   app.use('/uploads', express.static(join(__dirname, '..', '..', 'uploads')));
 
+  // Log existing companies at startup to verify seed ran
+  try {
+    const { PrismaClient } = await import('@prisma/client');
+    const prisma = new PrismaClient();
+    const companies = await prisma.company.findMany();
+    console.log('Existing companies on DB:', companies);
+    await prisma.$disconnect();
+  } catch (err) {
+    console.error('Failed to list companies on startup', err?.message || err);
+  }
+
   await app.listen(process.env.PORT || 3005);
 }
 bootstrap();
