@@ -10,7 +10,7 @@ datasource db {
 model Company {
   id        String   @id @default(uuid())
   nameAr    String
-  nameEn    String
+  nameEn    String   @unique
   logoUrl   String?
   taxNumber String?
   createdAt DateTime @default(now())
