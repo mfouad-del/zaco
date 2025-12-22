@@ -50,6 +50,13 @@ export class CorrespondenceController {
     },
   })
   create(@CurrentUser() user: any, @Body() dto: CreateCorrespondenceDto, @UploadedFile() file: Express.Multer.File) {
+    // Log incoming request for debugging
+    console.log('Correspondence create request', {
+      user: { id: user?.id, email: user?.email, companyId: user?.companyId },
+      dto,
+      file: file ? { originalname: file.originalname, filename: (file as any).filename, size: file.size } : null,
+    });
+
     return this.correspondenceService.create(user.id, user.companyId, dto, file);
   }
 
