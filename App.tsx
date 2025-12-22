@@ -64,11 +64,12 @@ const App: React.FC = () => {
     }
   };
 
+  const baseUrl = (import.meta as any).env?.BASE_URL || '/';
   const currentCompany = settings.companies.find(c => c.id === selectedCompanyId) || settings.companies[0] || {
     id: 'default',
     nameAr: 'جاري التحميل...',
     nameEn: 'Loading...',
-    logoUrl: '/logo.png'
+    logoUrl: `${baseUrl}logo.png`
   };
   
   const filteredDocs = docs; // Backend filters by company automatically
@@ -114,7 +115,7 @@ const App: React.FC = () => {
     }
   };
 
-  if (!currentUser) return <Login onLogin={setCurrentUser} logoUrl="/logo.png" />;
+  if (!currentUser) return <Login onLogin={setCurrentUser} logoUrl={`${baseUrl}logo.png`} />;
 
   const NavItem = ({ id, label, icon: Icon, adminOnly = false }: { id: string, label: string, icon: any, adminOnly?: boolean }) => {
     if (adminOnly && currentUser.role !== 'ADMIN') return null;
