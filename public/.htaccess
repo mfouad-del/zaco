@@ -1,6 +1,22 @@
+<IfModule mod_headers.c>
+  # Prevent caching of index.html to avoid stale SPA issues
+  <FilesMatch "^index\.html$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+  </FilesMatch>
+  
+  # Enable CORS for assets
+  Header set Access-Control-Allow-Origin "*"
+</IfModule>
+
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /zaco/
+  
+  # Force non-www (prevent redirect to www.zaco.sa)
+  RewriteCond %{HTTP_HOST} ^www\.zaco\.sa$ [NC]
+  RewriteRule ^(.*)$ https://zaco.sa/zaco/$1 [R=301,L]
   
   # Don't rewrite files or directories
   RewriteCond %{REQUEST_FILENAME} -f [OR]
