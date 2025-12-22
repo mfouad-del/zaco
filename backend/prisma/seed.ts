@@ -4,6 +4,10 @@ import * as argon2 from 'argon2';
 const prisma = new PrismaClient();
 
 async function main() {
+  if (process.env.RUN_SEED !== '1') {
+    console.log('Seed skipped. To run seed set env RUN_SEED=1 (intentionally disabled in production)');
+    return;
+  }
   // Ensure a single canonical Zawaya company and update its display name/logo
   const existing = await prisma.company.findMany({ where: { nameEn: 'Zawaya Albina' }, orderBy: { createdAt: 'asc' } });
   let company;
