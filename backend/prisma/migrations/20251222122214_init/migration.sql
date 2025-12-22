@@ -5,8 +5,8 @@ CREATE TABLE "Company" (
     "nameEn" TEXT NOT NULL,
     "logoUrl" TEXT,
     "taxNumber" TEXT,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL
+    "createdAt" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP NOT NULL
 );
 
 -- CreateTable
@@ -17,8 +17,8 @@ CREATE TABLE "User" (
     "name" TEXT NOT NULL,
     "role" TEXT NOT NULL DEFAULT 'USER',
     "companyId" TEXT NOT NULL,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL,
+    "createdAt" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP NOT NULL,
     CONSTRAINT "User_companyId_fkey" FOREIGN KEY ("companyId") REFERENCES "Company" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
@@ -32,7 +32,7 @@ CREATE TABLE "Correspondence" (
     "recipient" TEXT NOT NULL,
     "referenceNum" TEXT,
     "internalRef" TEXT,
-    "docDate" DATETIME NOT NULL,
+    "docDate" TIMESTAMP NOT NULL,
     "priority" TEXT NOT NULL DEFAULT 'NORMAL',
     "securityLevel" TEXT NOT NULL DEFAULT 'PUBLIC',
     "attachmentUrl" TEXT,
@@ -40,8 +40,8 @@ CREATE TABLE "Correspondence" (
     "category" TEXT,
     "physicalLocation" TEXT,
     "companyId" TEXT NOT NULL,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL,
+    "createdAt" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP NOT NULL,
     CONSTRAINT "Correspondence_companyId_fkey" FOREIGN KEY ("companyId") REFERENCES "Company" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
@@ -51,7 +51,7 @@ CREATE TABLE "AuditLog" (
     "userId" TEXT NOT NULL,
     "action" TEXT NOT NULL,
     "metadata" TEXT,
-    "timestamp" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "timestamp" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT "AuditLog_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
