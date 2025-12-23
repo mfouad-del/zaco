@@ -29,7 +29,16 @@ const ReportGenerator: React.FC<ReportGeneratorProps> = ({ docs, settings }) => 
     outgoing: filteredDocs.filter(d => d.type === DocType.OUTGOING).length,
   };
 
+  const [dateError, setDateError] = useState<string | null>(null);
+
   const handlePrintReport = () => {
+    // Validate dates
+    if (Date.parse(startDate) > Date.parse(endDate)) {
+      setDateError('تاريخ البداية يجب أن يكون قبل أو مساوي لتاريخ النهاية');
+      return;
+    }
+    setDateError(null);
+
     const printWindow = window.open('', '_blank');
     if (!printWindow) return;
 
@@ -186,23 +195,25 @@ const ReportGenerator: React.FC<ReportGeneratorProps> = ({ docs, settings }) => 
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10 p-8 bg-slate-50 rounded-[2.5rem] border border-slate-100">
           <div className="space-y-3">
-            <label className="flex items-center gap-2 text-xs font-black text-slate-400 uppercase tracking-widest">
+            <label className="flex items-center gap-2 text-xs font-black text-slate-700 uppercase tracking-widest">
               <Calendar size={14} /> تاريخ البداية
             </label>
             <input 
+              aria-label="تاريخ البداية"
               type="date" 
-              className="w-full p-4 bg-white border border-slate-200 rounded-2xl focus:ring-4 focus:ring-blue-500/10 outline-none font-bold transition-all"
+              className="w-full p-4 bg-white border border-slate-200 rounded-2xl focus:ring-4 focus:ring-blue-200 outline-none font-bold transition-all text-slate-800"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
             />
           </div>
           <div className="space-y-3">
-            <label className="flex items-center gap-2 text-xs font-black text-slate-400 uppercase tracking-widest">
+            <label className="flex items-center gap-2 text-xs font-black text-slate-700 uppercase tracking-widest">
               <Calendar size={14} /> تاريخ النهاية
             </label>
             <input 
+              aria-label="تاريخ النهاية"
               type="date" 
-              className="w-full p-4 bg-white border border-slate-200 rounded-2xl focus:ring-4 focus:ring-blue-500/10 outline-none font-bold transition-all"
+              className="w-full p-4 bg-white border border-slate-200 rounded-2xl focus:ring-4 focus:ring-blue-200 outline-none font-bold transition-all text-slate-800"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
             />
@@ -224,11 +235,13 @@ const ReportGenerator: React.FC<ReportGeneratorProps> = ({ docs, settings }) => 
           </div>
         </div>
 
+        {dateError && <div className="text-red-600 font-bold mb-4" role="alert">{dateError}</div>}
         <div className="flex gap-4">
           <button 
             onClick={handlePrintReport}
-            disabled={stats.total === 0}
-            className="flex-1 bg-slate-900 hover:bg-black text-white py-5 rounded-3xl font-black text-lg shadow-xl shadow-slate-200 transition-all active:scale-[0.98] flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={filteredDocs.length === 0}
+            aria-disabled={filteredDocs.length === 0}
+            className="flex-1 bg-blue-700 hover:bg-blue-800 text-white py-5 rounded-3xl font-black text-lg shadow-md transition-all active:scale-[0.98] flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Printer size={24} /> معالجة وطباعة التقرير A4
           </button>

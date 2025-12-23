@@ -33,10 +33,10 @@ const Dashboard: React.FC<DashboardProps> = ({ docs }) => {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="bg-white p-10 rounded-[2.5rem] border border-slate-100 shadow-sm flex flex-col">
-           <div className="text-[11px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-4">إجمالي المعاملات</div>
+           <div className="text-[11px] font-bold text-muted uppercase tracking-[0.2em] mb-4">إجمالي المعاملات</div>
            <div className="flex items-center justify-between">
               <div className="text-6xl font-black text-slate-900 leading-none">{total}</div>
-              <div className="bg-slate-50 p-4 rounded-2xl text-slate-300"><Layers size={32} /></div>
+              <div className="bg-blue-50 p-4 rounded-2xl text-blue-600"><Layers size={32} /></div>
            </div>
         </div>
         <div className="bg-white p-10 rounded-[2.5rem] border border-slate-100 shadow-sm flex flex-col">
