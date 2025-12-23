@@ -29,6 +29,15 @@ async function bootstrap() {
     const prisma = new PrismaClient();
     const companies = await prisma.company.findMany();
     console.log('Existing companies on DB:', companies);
+
+    // Backfill missing docDate in correspondences to createdAt to avoid 'undefined' in PDFs/reports
+    try {
+      const rows = await prisma.$executeRaw`UPDATE "Correspondence" SET "docDate" = "createdAt" WHERE "docDate" IS NULL`;
+      console.log('Backfilled correspondences missing docDate, rows affected:', rows);
+    } catch (err) {
+      console.error('Failed to backfill docDate', err?.message || err);
+    }
+
     await prisma.$disconnect();
   } catch (err) {
     console.error('Failed to list companies on startup', err?.message || err);

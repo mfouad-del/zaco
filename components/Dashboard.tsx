@@ -57,8 +57,8 @@ const Dashboard: React.FC<DashboardProps> = ({ docs }) => {
 
       <div className="bg-white p-12 rounded-[3rem] border border-slate-100 shadow-sm">
         <h3 className="text-xl font-bold mb-10 text-slate-900">توزيع الحركة</h3>
-        <div className="h-64 w-full">
-          <ResponsiveContainer width="100%" height="100%">
+        <div className="w-full">
+          <ResponsiveContainer width="100%" height={250}>
             <BarChart data={data}>
               <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: '#94a3b8', fontSize: 13, fontWeight: 'bold'}} dy={10} />
               <YAxis hide />

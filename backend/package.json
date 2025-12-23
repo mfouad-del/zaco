@@ -25,15 +25,21 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@fontsource/tajawal": "^5.2.7",
+    "@nestjs/cli": "^10.0.0",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.2.0",
     "@nestjs/core": "^10.0.0",
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/passport": "^10.0.3",
     "@nestjs/platform-express": "^10.0.0",
+    "@nestjs/schematics": "^10.0.0",
     "@nestjs/swagger": "^7.3.0",
     "@prisma/client": "^5.10.2",
+    "@types/node": "^20.3.1",
+    "arabic-reshaper": "^1.1.0",
     "argon2": "^0.40.1",
+    "bidi-js": "^1.0.3",
     "bwip-js": "^4.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
@@ -43,12 +49,9 @@
     "pdfkit": "^0.14.0",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
-    "uuid": "^9.0.1",
-    "@nestjs/cli": "^10.0.0",
-    "@nestjs/schematics": "^10.0.0",
-    "@types/node": "^20.3.1",
+    "ts-node": "^10.9.1",
     "typescript": "^5.1.3",
-    "ts-node": "^10.9.1"
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@nestjs/testing": "^10.0.0",

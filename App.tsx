@@ -52,6 +52,22 @@ const App: React.FC = () => {
     }
   }, [currentUser, selectedCompanyId]);
 
+  // Poll for updates and refresh on window focus so UI reflects real-time changes
+  useEffect(() => {
+    if (!currentUser || !selectedCompanyId) return;
+    const interval = setInterval(() => {
+      fetchData();
+    }, 15000); // every 15s
+
+    const onFocus = () => fetchData();
+    window.addEventListener('focus', onFocus);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('focus', onFocus);
+    };
+  }, [currentUser, selectedCompanyId]);
+
   const fetchData = async () => {
     try {
       const [docsData, companiesData, statsData] = await Promise.all([

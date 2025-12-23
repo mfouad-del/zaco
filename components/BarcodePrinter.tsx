@@ -110,15 +110,41 @@ const BarcodePrinter: React.FC<BarcodePrinterProps> = ({ doc, settings }) => {
       const imgY = 80;
       ctx.drawImage(img, imgX, imgY, imgW, imgH);
 
-      // barcode id
-      ctx.font = '600 18px Tajawal, Arial, sans-serif';
-      ctx.fillStyle = '#111827';
-      ctx.fillText(doc.barcodeId, width / 2, imgY + imgH + 30);
+      // barcode id with black pill
+      ctx.font = '700 20px monospace';
+      const idText = doc.barcodeId;
+      const idMetrics = ctx.measureText(idText);
+      const idW = Math.ceil(idMetrics.width) + 24;
+      const idH = 32;
+      const idX = (width - idW) / 2;
+      const idY = imgY + imgH + 12;
+      // pill background
+      ctx.fillStyle = '#000000';
+      const radius = 6;
+      ctx.beginPath();
+      ctx.moveTo(idX + radius, idY);
+      ctx.lineTo(idX + idW - radius, idY);
+      ctx.quadraticCurveTo(idX + idW, idY, idX + idW, idY + radius);
+      ctx.lineTo(idX + idW, idY + idH - radius);
+      ctx.quadraticCurveTo(idX + idW, idY + idH, idX + idW - radius, idY + idH);
+      ctx.lineTo(idX + radius, idY + idH);
+      ctx.quadraticCurveTo(idX, idY + idH, idX, idY + idH - radius);
+      ctx.lineTo(idX, idY + radius);
+      ctx.quadraticCurveTo(idX, idY, idX + radius, idY);
+      ctx.closePath();
+      ctx.fill();
+      // id text
+      ctx.fillStyle = '#ffffff';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(idText, width / 2, idY + idH / 2);
 
       // date
       ctx.font = '400 14px Tajawal, Arial, sans-serif';
       const dateStr = doc.documentDate ? new Date(doc.documentDate).toLocaleDateString('ar-SA') : new Date(doc.createdAt).toLocaleDateString('ar-SA');
-      ctx.fillText(dateStr, width / 2, imgY + imgH + 54);
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#6b7280';
+      ctx.fillText(dateStr, width / 2, idY + idH + 20);
 
       // convert to blob and download
       canvas.toBlob((blob) => {
@@ -139,13 +165,42 @@ const BarcodePrinter: React.FC<BarcodePrinterProps> = ({ doc, settings }) => {
   };
 
   const handlePrint = () => {
-    if (!previewUrl) return alert('لا يوجد معاينة');
+    // open print window with same styled label and trigger print
+    const barcode = `https://bwipjs-api.metafloor.com/?bcid=code128&text=${encodeURIComponent(doc.barcodeId)}&scale=3&rotate=N&includetext=false`;
+    const dateStr = doc.documentDate ? new Date(doc.documentDate).toLocaleDateString('ar-SA') : new Date(doc.createdAt).toLocaleDateString('ar-SA');
+    const html = `
+      <html>
+        <head>
+          <meta charset="utf-8" />
+          <meta name="viewport" content="width=device-width,initial-scale=1" />
+          <style>
+            @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@700;900&display=swap');
+            body { font-family: 'Tajawal', sans-serif; margin: 0; padding: 0; background: #fff; direction: rtl; }
+            .label { width: 320px; padding: 16px; border: 1px solid #e5e7eb; text-align: center; }
+            .org { font-size: 13px; font-weight: 900; margin-bottom: 8px; border-bottom: 1px solid #eee; padding-bottom: 6px; }
+            .barcode-img { width: 100%; height: auto; image-rendering: pixelated; }
+            .id-text { font-family: monospace; font-size: 18px; font-weight: 900; background: #000; color: #fff; padding: 6px 12px; margin-top: 8px; display: inline-block; border-radius: 6px; }
+            .meta { font-size: 11px; color: #6b7280; margin-top: 8px; font-weight: 700; }
+            @media print { body { padding: 5px; } }
+          </style>
+        </head>
+        <body>
+          <div class="label">
+            <div class="org">${settings?.orgName || 'نظام الأرشفة الموحد'}</div>
+            <img class="barcode-img" src="${barcode}" />
+            <div class="id-text">${doc.barcodeId}</div>
+            <div class="meta">${doc.title || ''} · ${dateStr}</div>
+          </div>
+          <script>window.onload = () => { setTimeout(() => { window.print(); window.close(); }, 300); }</script>
+        </body>
+      </html>
+    `;
+
     const w = window.open('', '_blank');
-    if (!w) return;
-    w.document.write(`<img src="${previewUrl}" style="width:100%;height:auto;"/>`);
+    if (!w) return alert('تعذر فتح نافذة الطباعة');
+    w.document.write(html);
     w.document.close();
     w.focus();
-    setTimeout(() => w.print(), 300);
   };
 
   return (
@@ -169,7 +224,18 @@ const BarcodePrinter: React.FC<BarcodePrinterProps> = ({ doc, settings }) => {
               </div>
             </div>
             <div className="p-6 flex items-center justify-center">
-              {imgLoading ? <div>جارٍ التحميل...</div> : <img src={previewUrl ?? ''} alt="barcode" className="w-full h-auto object-contain" />}
+              {imgLoading ? (
+                <div>جارٍ التحميل...</div>
+              ) : (
+                <div className="w-[320px] border rounded-lg p-4 text-center bg-white" dir="rtl">
+                  <div className="org font-black text-sm border-b pb-2 mb-2">{settings?.orgName || 'نظام الأرشفة الموحد'}</div>
+                  <img src={previewUrl ?? ''} alt="barcode" className="w-full h-auto image-rendering-pixelated" />
+                  <div className="mt-3">
+                    <div className="inline-block bg-black text-white font-mono text-lg font-black px-3 py-1 rounded">{doc.barcodeId}</div>
+                  </div>
+                  <div className="mt-2 text-xs text-slate-500 font-bold">{doc.title} · {doc.documentDate ? new Date(doc.documentDate).toLocaleDateString('ar-SA') : new Date(doc.createdAt).toLocaleDateString('ar-SA')}</div>
+                </div>
+              )}
             </div>
             <div className="p-4 text-xs text-slate-500 text-center">{settings?.orgName || ''} {doc.title} — {doc.documentDate ? new Date(doc.documentDate).toLocaleDateString('ar-SA') : new Date(doc.createdAt).toLocaleDateString('ar-SA')}</div>
           </div>

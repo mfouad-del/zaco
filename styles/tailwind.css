@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #FAFBFC;
+  --surface: #FFFFFF;
+  --muted: #64748b;
+  --text: #091126;
+  --primary: #1e40af;
+  --accent: #2563eb;
+  --card-border: #e6eef8;
+}
+
+body { font-family: 'Tajawal', sans-serif; background-color: var(--bg); color: var(--text); }
