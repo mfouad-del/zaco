@@ -11,10 +11,26 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg: #FAFBFC;
+            --surface: #FFFFFF;
+            --muted: #64748b;
+            --text: #091126;
+            --primary: #1e40af;
+            --accent: #2563eb;
+            --card-border: #e6eef8;
+            --shadow-strong: 0 12px 40px rgba(16,24,40,0.08);
+        }
         body {
             font-family: 'Tajawal', sans-serif;
-            background-color: #f8fafc;
+            background-color: var(--bg);
+            color: var(--text);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
+        .text-muted { color: var(--muted); }
+        .card { background: var(--surface); border: 1px solid var(--card-border); box-shadow: var(--shadow-strong); }
+
         @media print {
             .no-print { display: none !important; }
             .print-only { display: block !important; }
