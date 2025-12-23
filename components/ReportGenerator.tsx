@@ -111,10 +111,10 @@ const ReportGenerator: React.FC<ReportGeneratorProps> = ({ docs, settings }) => 
         <body>
           <div class="header">
              <img src="${logoUrl}" style="height: 70px;">
-             <div class="header-info" style="text-align: center;">
-                <h1>${orgName}</h1>
-                <p>نظام ArchivX Enterprise - مركز التقارير</p>
-             </div>
+           <div class="header-info" style="text-align: center;">
+             <h1>${orgName}</h1>
+             <p>مركز التقارير</p>
+           </div>
              <div style="width: 70px;"></div>
           </div>
 

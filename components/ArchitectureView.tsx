@@ -19,7 +19,7 @@ const ArchitectureView: React.FC = () => {
     <div className="max-w-6xl mx-auto space-y-16 animate-in fade-in duration-700 pb-20">
       <div className="text-center space-y-4">
         <div className="inline-block bg-blue-100 text-blue-700 px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest mb-2">Technical Specifications v2.5</div>
-        <h2 className="text-5xl font-black text-slate-900 tracking-tight leading-tight">هيكلية ArchivX <span className="text-blue-600">Enterprise</span></h2>
+        <h2 className="text-5xl font-black text-slate-900 tracking-tight leading-tight">هيكلية النظام</h2>
         <p className="text-slate-500 text-xl max-w-3xl mx-auto leading-relaxed">
           نظام متكامل مبني على معايير الحوكمة السعودية (NDA) وأمن المعلومات السيبرانية.
         </p>

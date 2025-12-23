@@ -47,7 +47,7 @@ const DocumentList: React.FC<DocumentListProps> = ({ docs, settings }) => {
             <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} className="p-3 rounded-xl border border-slate-100 bg-white text-sm font-bold" />
           </div>
         </div>
-        <button onClick={() => exportToCSV(filtered, 'Zawaya_ArchivX')} className="bg-slate-900 text-white px-8 py-5 rounded-[2rem] font-black text-sm flex items-center gap-3 shadow-xl hover:bg-slate-800 transition-all">
+        <button onClick={() => exportToCSV(filtered, 'Zawaya_Export')} className="bg-slate-900 text-white px-8 py-5 rounded-[2rem] font-black text-sm flex items-center gap-3 shadow-xl hover:bg-slate-800 transition-all">
           <FileSpreadsheet size={18} /> تصدير السجل العام
         </button>
       </div>
