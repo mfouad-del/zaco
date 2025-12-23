@@ -15,8 +15,6 @@ import { correspondence, companies, stats } from './services/api';
 
 console.log('[ARCHIVX] App component loaded');
 
-const BUILD_TS = Date.now();
-
 const App: React.FC = () => {
   console.log('[ARCHIVX] App component rendering...');
   
@@ -121,7 +119,7 @@ const App: React.FC = () => {
     }
   };
 
-  if (!currentUser) return <Login onLogin={setCurrentUser} logoUrl={`https://www.zaco.sa/logo2.png?v=${BUILD_TS}`} />;
+  if (!currentUser) return <Login onLogin={setCurrentUser} logoUrl={`https://www.zaco.sa/logo2.png`} />;
 
   const NavItem = ({ id, label, icon: Icon, adminOnly = false }: { id: string, label: string, icon: any, adminOnly?: boolean }) => {
     if (adminOnly && currentUser.role !== 'ADMIN') return null;
@@ -134,7 +132,7 @@ const App: React.FC = () => {
     <div className="flex h-screen bg-[#FDFDFD] text-slate-900 font-sans overflow-hidden">
       <aside className="w-80 bg-white border-l border-slate-100 flex flex-col shrink-0 z-10 no-print">
         <div className="p-10 mb-2">
-           <img src={`${currentCompany.logoUrl}?v=${BUILD_TS}`} className="h-16 w-auto mb-4 object-contain" alt="Logo" />
+           <img src={currentCompany.logoUrl} className="h-16 w-auto mb-4 object-contain" alt="Logo" />
            <div className="text-[10px] font-black text-slate-300 uppercase tracking-widest">{currentCompany.nameEn}</div>
            <div className="mt-8 space-y-2">
               <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest block px-1">تبديل المنشأة</label>
