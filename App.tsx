@@ -228,6 +228,10 @@ const App: React.FC = () => {
           )}
         </div>
       </main>
+
+      <footer className="w-full bg-white border-t border-slate-100 p-6 text-center text-sm text-slate-600 print:hidden">
+        <div className="max-w-[1600px] mx-auto">{settings.footerText}</div>
+      </footer>
     </div>
   );
 };
