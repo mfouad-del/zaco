@@ -67,6 +67,77 @@ const BarcodePrinter: React.FC<BarcodePrinterProps> = ({ doc, settings }) => {
     link.remove();
   };
 
+  const handleSaveStyledPng = async () => {
+    if (!previewUrl) return alert('لا يوجد معاينة');
+    try {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.src = previewUrl;
+      await new Promise<void>((res, rej) => {
+        img.onload = () => res();
+        img.onerror = () => rej(new Error('Image load error'));
+      });
+
+      const width = 600;
+      const height = 340;
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) throw new Error('Failed to get canvas context');
+
+      // background
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, width, height);
+
+      // header: company name (RTL)
+      ctx.fillStyle = '#0f172a';
+      ctx.textAlign = 'center';
+      ctx.direction = 'rtl';
+      ctx.font = '700 22px Tajawal, Arial, sans-serif';
+      const company = settings?.orgName || '';
+      if (company) ctx.fillText(company, width / 2, 36);
+
+      // title
+      ctx.font = '600 16px Tajawal, Arial, sans-serif';
+      if (doc.title) ctx.fillText(doc.title, width / 2, 60);
+
+      // draw barcode image centered
+      const maxImgW = width - 80;
+      const imgW = Math.min(maxImgW, img.width);
+      const imgH = (imgW / img.width) * img.height;
+      const imgX = (width - imgW) / 2;
+      const imgY = 80;
+      ctx.drawImage(img, imgX, imgY, imgW, imgH);
+
+      // barcode id
+      ctx.font = '600 18px Tajawal, Arial, sans-serif';
+      ctx.fillStyle = '#111827';
+      ctx.fillText(doc.barcodeId, width / 2, imgY + imgH + 30);
+
+      // date
+      ctx.font = '400 14px Tajawal, Arial, sans-serif';
+      const dateStr = doc.documentDate ? new Date(doc.documentDate).toLocaleDateString('ar-SA') : new Date(doc.createdAt).toLocaleDateString('ar-SA');
+      ctx.fillText(dateStr, width / 2, imgY + imgH + 54);
+
+      // convert to blob and download
+      canvas.toBlob((blob) => {
+        if (!blob) return alert('فشل إنشاء الصورة');
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `label-${doc.barcodeId}.png`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      }, 'image/png', 0.95);
+    } catch (e) {
+      console.error('Save styled PNG failed', e);
+      alert('فشل حفظ PNG');
+    }
+  };
+
   const handlePrint = () => {
     if (!previewUrl) return alert('لا يوجد معاينة');
     const w = window.open('', '_blank');
@@ -92,6 +163,7 @@ const BarcodePrinter: React.FC<BarcodePrinterProps> = ({ doc, settings }) => {
               <div className="flex items-center gap-2">
                 <button onClick={handlePrint} className="bg-blue-600 text-white px-3 py-2 rounded">طباعة</button>
                 <button onClick={handleCopyImage} className="bg-emerald-600 text-white px-3 py-2 rounded">نسخ كصورة</button>
+                <button onClick={handleSaveStyledPng} className="bg-yellow-600 text-white px-3 py-2 rounded">حفظ PNG</button>
                 <button onClick={handleDownload} className="bg-slate-700 text-white px-3 py-2 rounded">تحميل</button>
                 <button onClick={handleClose} className="p-2 rounded bg-slate-100">إغلاق</button>
               </div>
