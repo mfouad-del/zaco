@@ -16,11 +16,8 @@ const ReportGenerator: React.FC<ReportGeneratorProps> = ({ docs, settings }) => 
   const [endDate, setEndDate] = useState(new Date().toISOString().split('T')[0]);
 
   const filteredDocs = docs.filter(doc => {
-    const docTs = doc.docDate ? Date.parse(doc.docDate) : (doc.createdAt ? Date.parse(doc.createdAt as any) : NaN);
-    if (Number.isNaN(docTs)) return false;
-    const s = Date.parse(startDate);
-    const e = Date.parse(endDate) + 24*60*60*1000 - 1; // include full end day
-    return docTs >= s && docTs <= e;
+    const d = doc.docDate ? new Date(doc.docDate).toISOString().split('T')[0] : '';
+    return d >= startDate && d <= endDate;
   });
 
   const stats = {
@@ -175,7 +172,7 @@ const ReportGenerator: React.FC<ReportGeneratorProps> = ({ docs, settings }) => 
     <div className="max-w-5xl mx-auto space-y-8 animate-in fade-in duration-700">
       <div className="bg-white p-10 rounded-[3rem] border border-slate-200 shadow-2xl shadow-slate-200/50">
         <div className="flex items-center gap-4 mb-8">
-          <div className="bg-blue-700 p-4 rounded-3xl text-white shadow-lg shadow-blue-200">
+          <div className="bg-blue-600 p-4 rounded-3xl text-white shadow-lg shadow-blue-200">
             <FileBarChart size={32} />
           </div>
           <div>

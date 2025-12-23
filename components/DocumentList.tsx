@@ -56,12 +56,11 @@ const DocumentList: React.FC<DocumentListProps> = ({ docs, settings }) => {
         <table className="w-full text-right border-collapse">
           <thead>
             <tr className="bg-slate-50/50">
-              <th className="px-10 py-8 text-[10px] font-black text-slate-700 uppercase tracking-widest text-center">الباركود الرقمي</th>
-              <th className="px-10 py-8 text-[10px] font-black text-slate-700 uppercase tracking-widest">تفاصيل المعاملة</th>
-              <th className="px-10 py-8 text-[10px] font-black text-slate-700 uppercase tracking-widest">تاريخ القيد</th>
-              <th className="px-10 py-8 text-[10px] font-black text-slate-700 uppercase tracking-widest">المستند الرقمي</th>
-              <th className="px-10 py-8 text-[10px] font-black text-slate-700 uppercase tracking-widest">مسار التداول</th>
-              <th className="px-10 py-8 text-[10px] font-black text-slate-700 uppercase tracking-widest text-left">الأدوات</th>
+              <th className="px-10 py-8 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">الباركود الرقمي</th>
+              <th className="px-10 py-8 text-[10px] font-black text-slate-400 uppercase tracking-widest">تفاصيل المعاملة</th>
+              <th className="px-10 py-8 text-[10px] font-black text-slate-400 uppercase tracking-widest">المستند الرقمي</th>
+              <th className="px-10 py-8 text-[10px] font-black text-slate-400 uppercase tracking-widest">مسار التداول</th>
+              <th className="px-10 py-8 text-[10px] font-black text-slate-400 uppercase tracking-widest text-left">الأدوات</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-50">
@@ -82,9 +81,6 @@ const DocumentList: React.FC<DocumentListProps> = ({ docs, settings }) => {
                          <span className="text-[10px] font-bold text-blue-500">{doc.category}</span>
                       </div>
                    </div>
-                </td>
-                <td className="px-10 py-10">
-                   <div className="text-sm font-bold text-slate-700">{doc.docDate ? new Date(doc.docDate).toLocaleDateString('ar-SA') : (doc.createdAt ? new Date(doc.createdAt as any).toLocaleDateString('ar-SA') : '—')}</div>
                 </td>
                 <td className="px-10 py-10">
                    {doc.pdfFile ? (

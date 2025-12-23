@@ -28,7 +28,7 @@ const App: React.FC = () => {
   const [selectedCompanyId, setSelectedCompanyId] = useState<string>('');
   const [settings, setSettings] = useState<SystemSettings>({
     primaryColor: '#1a1a1a',
-    footerText: 'جميع الحقوق محفوظه شركة زوايا البناء للإستشارات الهندسيه',
+    footerText: 'نظام الأرشفة الموحد - الإصدار المؤسسي 5.0',
     showStamp: true,
     autoArchive: false,
     companies: []
