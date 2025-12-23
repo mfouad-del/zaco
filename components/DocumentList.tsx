@@ -29,23 +29,22 @@ const DocumentList: React.FC<DocumentListProps> = ({ docs, settings }) => {
     <div className="space-y-8 animate-in fade-in duration-700">
       <div className="flex flex-col lg:flex-row gap-6 justify-between items-center">
         <div className="relative flex-1 w-full max-w-2xl">
-          <Search className="absolute right-6 top-1/2 -translate-y-1/2 text-muted" size={20} aria-hidden="true" />
+          <Search className="absolute right-6 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
           <input 
             type="text" 
-            aria-label="بحث في الأرشيف"
             placeholder="البحث في الأرشيف الهندسي (باركود، عنوان، موضوع)..." 
-            className="w-full pr-16 pl-6 py-5 bg-white border border-slate-100 rounded-[2.5rem] shadow-sm outline-none focus:ring-4 focus:ring-blue-200 focus:border-transparent transition-all font-bold"
+            className="w-full pr-16 pl-6 py-5 bg-white border border-slate-100 rounded-[2.5rem] shadow-sm outline-none focus:border-slate-900 transition-all font-bold"
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
           />
           <div className="flex gap-3 mt-3">
-            <select aria-label="فلتر النوع" value={typeFilter} onChange={e => setTypeFilter(e.target.value)} className="p-3 rounded-xl border border-slate-100 bg-white text-sm font-bold text-slate-700">
+            <select value={typeFilter} onChange={e => setTypeFilter(e.target.value)} className="p-3 rounded-xl border border-slate-100 bg-white text-sm font-bold">
               <option value="">كل الأنواع</option>
               <option value="INCOMING">وارد</option>
               <option value="OUTGOING">صادر</option>
             </select>
-            <input aria-label="تاريخ البداية" type="date" value={startDate} onChange={e => setStartDate(e.target.value)} className="p-3 rounded-xl border border-slate-100 bg-white text-sm font-bold text-slate-700" />
-            <input aria-label="تاريخ النهاية" type="date" value={endDate} onChange={e => setEndDate(e.target.value)} className="p-3 rounded-xl border border-slate-100 bg-white text-sm font-bold text-slate-700" />
+            <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} className="p-3 rounded-xl border border-slate-100 bg-white text-sm font-bold" />
+            <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} className="p-3 rounded-xl border border-slate-100 bg-white text-sm font-bold" />
           </div>
         </div>
         <button onClick={() => exportToCSV(filtered, 'Zawaya_ArchivX')} className="bg-slate-900 text-white px-8 py-5 rounded-[2rem] font-black text-sm flex items-center gap-3 shadow-xl hover:bg-slate-800 transition-all">
@@ -53,7 +52,7 @@ const DocumentList: React.FC<DocumentListProps> = ({ docs, settings }) => {
         </button>
       </div>
 
-      <div className="bg-white rounded-[4rem] border border-slate-100 shadow-sm overflow-hidden card responsive-table">
+      <div className="bg-white rounded-[4rem] border border-slate-100 shadow-[0_40px_100px_rgba(0,0,0,0.02)] overflow-hidden">
         <table className="w-full text-right border-collapse">
           <thead>
             <tr className="bg-slate-50/50">
@@ -67,11 +66,11 @@ const DocumentList: React.FC<DocumentListProps> = ({ docs, settings }) => {
           </thead>
           <tbody className="divide-y divide-slate-50">
             {filtered.length > 0 ? filtered.map(doc => (
-              <tr key={doc.id} className="hover:shadow-sm transition-all group rounded-xl">
+              <tr key={doc.id} className="hover:bg-slate-50/50 transition-all group">
                 <td className="px-10 py-10">
-                   <div className="flex flex-col items-start gap-2">
-                     <span className="font-mono text-[13px] font-black text-slate-900 bg-white border border-slate-200 px-4 py-2 rounded-2xl shadow-sm group-hover:border-slate-900 transition-all">{doc.barcodeId}</span>
-                     <span className="text-[10px] font-bold text-muted uppercase tracking-tighter flex items-center gap-1">{doc.status || ''}</span>
+                   <div className="flex flex-col items-center gap-2">
+                     <span className="font-mono text-[13px] font-black text-slate-900 bg-white border border-slate-200 px-5 py-2.5 rounded-2xl shadow-sm group-hover:border-slate-900 transition-all">{doc.barcodeId}</span>
+                     <span className="text-[8px] font-black text-slate-300 uppercase tracking-tighter flex items-center gap-1"><ShieldCheck size={10} /> Verified ID</span>
                    </div>
                 </td>
                 <td className="px-10 py-10">

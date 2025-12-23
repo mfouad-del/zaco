@@ -11,39 +11,13 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg: #FAFBFC;
-            --surface: #FFFFFF;
-            --muted: #64748b;
-            --text: #0b1220;
-            --primary: #1e3a8a; /* stronger blue */
-            --accent: #2563eb;
-            --card-border: #e6eef8;
-            --shadow-strong: 0 12px 40px rgba(16,24,40,0.08);
-        }
         body {
             font-family: 'Tajawal', sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            background-color: #f8fafc;
+            color: #0f172a; /* stronger default text color */
         }
-        .text-muted { color: var(--muted); }
-        .card { background: var(--surface); border: 1px solid var(--card-border); box-shadow: var(--shadow-strong); }
-
-        /* Responsive table stacking for small screens */
-        .responsive-table table { width: 100%; border-collapse: collapse; }
-        .responsive-table thead { display: none; }
-        .responsive-table tr { display: block; margin-bottom: 12px; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 20px rgba(16,24,40,0.04); }
-        .responsive-table td { display: flex; justify-content: space-between; padding: 12px 16px; background: var(--surface); border-bottom: 1px solid #f1f5f9; }
-        .responsive-table td:last-child { border-bottom: none; }
-
-        @media (min-width: 768px) {
-          .responsive-table tr { display: table-row; box-shadow: none; }
-          .responsive-table td { display: table-cell; padding: 20px; }
-          .responsive-table thead { display: table-header-group; }
-        }
-
+        .text-muted { color: #64748b; }
+        .card { background: #fff; border: 1px solid #e6eef8; box-shadow: 0 8px 30px rgba(16,24,40,0.04); }
         @media print {
             .no-print { display: none !important; }
             .print-only { display: block !important; }
